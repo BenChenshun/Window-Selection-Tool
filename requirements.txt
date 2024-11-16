@@ -3,3 +3,4 @@ streamlit-extras
 numpy
 pandas
 category-encoders
+geopy
