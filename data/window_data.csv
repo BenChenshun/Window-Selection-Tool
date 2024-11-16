@@ -1,0 +1,11 @@
+window_type,SHGC,U-factor
+"Double, Low-E, Non-metal, Air, M-Gain",0.44,0.38
+"Double, Clear, Non-metal, Air",0.56,0.49
+"Single, Clear, Non-metal",0.63,0.84
+"Double, Clear, Metal, Air",0.67,0.76
+"Double, Clear, Non-metal, Air, Exterior Clear Storm",0.49,0.34
+"Double, Clear, Metal, Air, Exterior Clear Storm",0.51,0.55
+"Single, Clear, Metal",0.76,1.16
+"Triple, Low-E, Non-metal, Air, L-Gain",0.26,0.29
+"Single, Clear, Metal, Exterior Clear Storm",0.56,0.67
+"Single, Clear, Non-metal, Exterior Clear Storm",0.54,0.47
