@@ -4,3 +4,4 @@ numpy
 pandas
 category-encoders
 geopy
+geopandas
