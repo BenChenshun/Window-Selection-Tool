@@ -5,3 +5,4 @@ pandas
 category-encoders
 geopy
 geopandas
+lightgbm
