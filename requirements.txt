@@ -1,0 +1,5 @@
+streamlit
+streamlit-extras
+numpy
+pandas
+category-encoders
