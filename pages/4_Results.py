@@ -133,12 +133,25 @@ if "combined_window_database" in st.session_state and all(
 
                 results.loc[results["window_type"] == row["window_type"], target] = predictions
 
+    # Apply Logic to Update Results
+    results.loc[results["cooling_load"] < 1, ["cooling_load"]] = 0
+    results.loc[results["heating_load"] < 1, ["heating_load"]] = 0
 
     # Add percentage columns to the results DataFrame
-    results["cooling_window_percent"] = (results["cooling_window"] / results["cooling_load"]) * 100
-    results["heating_window_percent"] = (results["heating_window"] / results["heating_load"]) * 100
+    # Calculate percentages only when cooling_load and heating_load are > 0.5
+    results["cooling_window_percent"] = results.apply(
+        lambda row: (row["cooling_window"] / row["cooling_load"]) * 100 if row["cooling_load"] > 1 else 0, axis=1
+    )
+    results["heating_window_percent"] = results.apply(
+        lambda row: (row["heating_window"] / row["heating_load"]) * 100 if row["heating_load"] > 1 else 0, axis=1
+    )
     # Add an average percentage for sorting and recommendations
-    results["average_percent"] = (results["cooling_window_percent"] + results["heating_window_percent"]) / 2
+    results["average_percent"] = results.apply(
+        lambda row: row["heating_window_percent"] if row["cooling_load"] == 0 else
+        row["cooling_window_percent"] if row["heating_load"] == 0 else
+        (row["cooling_window_percent"] + row["heating_window_percent"]) / 2,
+        axis=1
+    )
 
     # Add a button to toggle between showing all results or top 3
     show_all = st.checkbox("Show All Results", value=False)
@@ -169,12 +182,28 @@ if "combined_window_database" in st.session_state and all(
 
         # Display each recommended window as text with emojis
         for i, row in top_3_results.iterrows():
-            st.markdown(
-                f"**{i + 1}. {row['window_type']}** 🪟\n"
-                f"- Cooling Efficiency: {row['cooling_window_percent']:.2f}% ❄️\n"
-                f"- Heating Efficiency: {row['heating_window_percent']:.2f}% 🔥\n"
-                f"- Average Efficiency: {row['average_percent']:.2f}% 🌟"
-            )
+            # Display custom messages for no cooling or heating need
+            if (top_3_results["cooling_load"] == 0).all():
+                st.markdown(
+                    f"**{i + 1}. {row['window_type']}** 🪟\n"
+                    f"- Your house has no cooling need! ❄️\n"
+                    f"- Heating Efficiency: {row['heating_window_percent']:.2f}% 🔥\n"
+                    f"- Average Efficiency: {row['average_percent']:.2f}% 🌟"
+                )
+            elif (top_3_results["heating_load"] == 0).all():
+                st.markdown(
+                    f"**{i + 1}. {row['window_type']}** 🪟\n"
+                    f"- Cooling Efficiency: {row['cooling_window_percent']:.2f}% ❄️\n"
+                    f"- Your house has no heating need! 🔥\n"
+                    f"- Average Efficiency: {row['average_percent']:.2f}% 🌟"
+                )
+            else:
+                st.markdown(
+                    f"**{i + 1}. {row['window_type']}** 🪟\n"
+                    f"- Cooling Efficiency: {row['cooling_window_percent']:.2f}% ❄️\n"
+                    f"- Heating Efficiency: {row['heating_window_percent']:.2f}% 🔥\n"
+                    f"- Average Efficiency: {row['average_percent']:.2f}% 🌟"
+                )
 
 else:
     st.error("Missing necessary data or predictors. Please complete previous sections.")
