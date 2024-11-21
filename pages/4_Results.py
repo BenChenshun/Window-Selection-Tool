@@ -89,7 +89,7 @@ def show_results(df):
                 f"- Total Cost Related to Window ($): {row['total_cost']:.2f} 💰"
             )
 
-st.write("** Summary of your house properties: **")
+st.write(f"**Summary of your house properties:**")
 # Display summary
 if "zip_code" in st.session_state:
     st.write(f"Zip Code: {st.session_state['zip_code']}")
