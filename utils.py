@@ -2,6 +2,7 @@
 
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.stoggle import stoggle
 
 # Navigation button functions
 def Home():

@@ -3,16 +3,43 @@ from preprocessing import *
 import pandas as pd
 from utils import Back_to_House, Go_to_Result
 
+# Path to the default window database file
+DEFAULT_WINDOW_DATABASE_PATH = 'data/window_data.csv'
+
+# Display default window database
+# st.write("### Default Window Database:")
+default_window_database = pd.read_csv(DEFAULT_WINDOW_DATABASE_PATH)
+# st.write(default_window_database)
+
 st.title("Specify Window Details")
 
-# st.write("Select your window-to-wall ratio (see example image below):")
-# window_wall_ratio_image_path = "data/window_wall_ratio_example.png"
-# st.image(window_wall_ratio_image_path, caption="Example Window-to-Wall Ratios")
+# Window-Wall Ratio
+st.write(f"**Select your window-to-wall ratio (see example image below):**")
+col1, col2, col3 = st.columns(3)
+with col1:
+    wwr_10_path = "utils/SF_WWR_10.png"
+    st.image(wwr_10_path, caption="Window-to-Wall Ratios = 9%")
+with col2:
+    wwr_15_path = "utils/SF_WWR_15.png"
+    st.image(wwr_15_path, caption="Window-to-Wall Ratios = 15%")
+with col3:
+    wwr_15_path = "utils/SF_WWR_30.png"
+    st.image(wwr_15_path, caption="Window-to-Wall Ratios = 30%")
+
 wwr = st.selectbox(
     "Window-to-Wall Ratio",
     options=[9, 15, 30],
     format_func=lambda x: f"{x}%"
 )
+
+# Baseline window for home users
+st.write(f"**Please select a window type your home currently use:**")
+baseline = st.selectbox(
+    "Baseline Window Type",
+    options=default_window_database["window_type"].unique(),
+    index=6
+)
+st.link_button("Learn about window products💡", "https://efficientwindows.org/types_parts/")
 
 conditioned_area = st.session_state["conditioned_area"]
 house_type = st.session_state["house_type"]
@@ -23,48 +50,65 @@ foundation = st.session_state["foundation"]
 window_area = calculate_predicted_window_area(conditioned_area, house_type, stories, wwr,
                                               foundation='Heated Basement')  # Defaulting foundation to 'Heated Basement' for demonstration
 
-# Path to the default window database file
-DEFAULT_WINDOW_DATABASE_PATH = 'data/window_data.csv'
-
-# Display default window database
-# st.write("### Default Window Database:")
-default_window_database = pd.read_csv(DEFAULT_WINDOW_DATABASE_PATH)
-# st.write(default_window_database)
-
 # Initialize session state for custom windows if not already present
 if "custom_windows" not in st.session_state:
-    st.session_state.custom_windows = pd.DataFrame(columns=["window_type", "U-factor", "SHGC"])
+    st.session_state.custom_windows = pd.DataFrame(columns=["window_type", "window_name", "U-factor", "SHGC"])
 
-# Form for adding custom windows
-st.header("Add Custom Windows")
-with st.form("add_window_form"):
-    window_type = st.text_input("Window Type", placeholder="Enter window type (e.g., Custom Window 1)")
-    U_factor = st.number_input("U-factor", min_value=0.0, step=0.01)
-    SHGC = st.number_input("SHGC (Solar Heat Gain Coefficient)", min_value=0.0, step=0.01)
-    submitted = st.form_submit_button("Add Window")
+# Add custom window
+add = st.toggle("Add Custom Windows")
+if add:
+    # Form for adding custom windows
+    with st.form("add_window_form"):
+        # Dropdown for predefined window types
+        window_type = st.selectbox("Window Type", options=default_window_database["window_type"].unique())
+        # Input for custom window name
+        window_name = st.text_input("Window Name",
+                                    placeholder="Enter a name for the custom window (e.g., My Custom Window)")
+        U_factor = st.number_input("U-factor", min_value=0.0, step=0.01)
+        SHGC = st.number_input("SHGC (Solar Heat Gain Coefficient)", min_value=0.0, step=0.01)
+        submitted = st.form_submit_button("Add Window")
 
-# Append custom window to session state if form is submitted
-if submitted:
-    if window_type and U_factor and SHGC:
-        new_window = pd.DataFrame(
-            [[window_type, U_factor, SHGC]],
-            columns=["window_type", "U-factor", "SHGC"]
-        )
-        st.session_state.custom_windows = pd.concat([st.session_state.custom_windows, new_window], ignore_index=True)
-        st.success(f"Window '{window_type}' added successfully!")
-    else:
-        st.error("Please fill out all fields before submitting.")
+    # Append custom window to session state if form is submitted
+    if submitted:
+        if window_type and window_name and U_factor and SHGC:
+            new_window = pd.DataFrame(
+                [[window_type, U_factor, SHGC]],
+                columns=["window_type", "U-factor", "SHGC"]
+            )
+            st.session_state.custom_windows = pd.concat([st.session_state.custom_windows, new_window], ignore_index=True)
+            st.success(f"Window '{window_type}' added successfully!")
+        else:
+            st.error("Please fill out all fields before submitting.")
 
 # Combine default and custom windows
-combined_window_database = pd.concat([default_window_database, st.session_state.custom_windows], ignore_index=True)
+combined_window_database = pd.concat([default_window_database[["window_type", "U-factor", "SHGC"]],
+                                      st.session_state.custom_windows], ignore_index=True)
+
+# Create a sorting key based on the pane type
+def get_sort_key(window_type):
+    if window_type.startswith("Single-pane"):
+        return 1  # Single-pane has the highest priority
+    elif window_type.startswith("Double-pane"):
+        return 2  # Double-pane next
+    elif window_type.startswith("Triple-pane"):
+        return 3  # Triple-pane last
+    else:
+        return 4  # Any other type (if exists)
+
+# Add a sort key column to the DataFrame
+combined_window_database["sort_key"] = combined_window_database["window_type"].apply(get_sort_key)
+
+# Sort the DataFrame by sort_key and then alphabetically within each group
+sorted_window_database = combined_window_database.sort_values(by=["sort_key", "window_type"]).drop(columns="sort_key")
 
 # Display the combined database
 st.write("### Current Window Database (Default + Custom):")
-st.write(combined_window_database)
+st.write(sorted_window_database)
 
 st.session_state["combined_window_database"] = combined_window_database
 st.session_state["window_area"] = window_area
 st.session_state["wwr"] = wwr
+st.session_state["baseline"] = baseline
 
 # Navigation buttons
 col1, col2 = st.columns(2)
