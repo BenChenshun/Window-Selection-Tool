@@ -51,37 +51,27 @@ def show_results(df):
         if (df["cooling_load"] == 0).all() and "cost_difference" in df.columns:
             stars = "⭐" * max(3 - i, 0)
             st.markdown(
-                f"**{stars}{row['window_type']}🪟** \n"
+                f"**{stars}{row['window_name']}🪟** \n"
                 f"- Your house has no cooling need! ❄️\n"
-                f"- Window Heating Contribution (%): {row['heating_window_percent']:.2f}% 🔥\n"
-                f"- Heating Cost Related to Window ($): {row['heating_cost']:.2f}% 💲\n"
-                f"- Total Cost Related to Window ($): {row['total_cost']:.2f} 💰\n"
-                f"- Total Money Saved By Using This Window ($): {row['cost_difference'] if pd.notnull(row['cost_difference']) else 0.00:.2f} 💰"
+                f"- Monthly Heating Money Saved Related to Window ($): {row['heating_difference']:.2f} 💲\n"
             )
         elif (df["heating_load"] == 0).all() and "cost_difference" in df.columns:
             stars = "⭐" * max(3 - i, 0)
             st.markdown(
-                f"**{stars}{row['window_type']}🪟** \n"
-                f"- Window Cooling Contribution (%): {row['cooling_window_percent']:.2f}% ❄️\n"
-                f"- Cooling Cost Related to Window ($): {row['cooling_cost']:.2f} 💲\n"
+                f"**{stars}{row['window_name']}🪟** \n"
+                f"- Monthly Cooling Money Saved Related to Window ($): {row['cooling_difference']:.2f} 💲\n"
                 f"- Your house has no heating need! 🔥\n"
-                f"- Total Cost Related to Window ($): {row['total_cost']:.2f} 💰\n"
-                f"- Total Money Saved By Using This Window ($): {row['cost_difference'] if pd.notnull(row['cost_difference']) else 0.00:.2f} 💰"
             )
         elif "cost_difference" in df.columns:
             stars = "⭐" * max(3 - i, 0)
             st.markdown(
-                f"**{stars}{row['window_type']}🪟** \n"
-                f"- Window Cooling Contribution (%): {row['cooling_window_percent']:.2f}% ❄️\n"
-                f"- Window Heating Contribution (%): {row['heating_window_percent']:.2f}% 🔥\n"
-                f"- Cooling Cost Related to Window ($): {row['cooling_cost']:.2f} 💲\n"
-                f"- Heating Cost Related to Window ($): {row['heating_cost']:.2f} 💲\n"
-                f"- Total Cost Related to Window ($): {row['total_cost']:.2f} 💰"
-                f"- Total Money Saved By Using This Window ($): {row['cost_difference'] if pd.notnull(row['cost_difference']) else 0.00:.2f} 💰"
+                f"**{stars}{row['window_name']}🪟** \n"
+                f"- Monthly Cooling Money Saved Related to Window ($): {row['cooling_difference']:.2f} 💲\n"
+                f"- Monthly Heating Money Saved Related to Window ($): {row['heating_difference']:.2f} 💲\n"
             )
         else:
             st.markdown(
-                f"**{row['window_type']}🪟** \n"
+                f"**{row['window_name']}🪟** \n"
                 f"- Window Cooling Contribution (%): {row['cooling_window_percent']:.2f}% ❄️\n"
                 f"- Window Heating Contribution (%): {row['heating_window_percent']:.2f}% 🔥\n"
                 f"- Cooling Cost Related to Window ($): {row['cooling_cost']:.2f} 💲\n"
@@ -110,14 +100,14 @@ if "window_wall_ratio" in st.session_state:
 # Check if combined_window_database and necessary predictors are available
 if "combined_window_database" in st.session_state and all(
     key in st.session_state for key in ['climatezone', 'zip_code', 'vintage', 'orientation',
-                                         'wwr', 'window_area', 'cooling_setpoint', 'heating_setpoint',
-                                         'HDH', 'CDH', 'winter_avg_temp', 'summer_avg_temp',
-                                         'GHI', 'conditioned_area', 'sv']
+                                        'conditioned_area', 'sv', 'cooling_setpoint', 'heating_setpoint',
+                                        'wwr', 'window_area',
+                                        'HDH', 'CDH', 'winter_avg_temp', 'summer_avg_temp', 'GHI']
 ):
     combined_window_database = st.session_state["combined_window_database"]
     # st.write(combined_window_database)
     # Initialize results DataFrame
-    results = combined_window_database[["window_type"]].copy()
+    results = combined_window_database[["window_name"]].copy()
 
     # Prepare predictors for each window
     for _, row in combined_window_database.iterrows():
@@ -127,9 +117,9 @@ if "combined_window_database" in st.session_state and all(
             "zip_code": st.session_state["zip_code"],
             "vintage": st.session_state["vintage"],
             "orientation": st.session_state["orientation"],
-            "window_type": row["window_type"],  # Window type (matches "window_type")
+            "window_type": row["window_type"],
             "wwr": st.session_state["wwr"],
-            "window_area": st.session_state["window_area"],  # Assuming this is calculated earlier
+            "window_area": st.session_state["window_area"],
             "U-factor": row["U-factor"],
             "SHGC": row["SHGC"],
             "cooling_setpoint": st.session_state["cooling_setpoint"],
@@ -173,7 +163,7 @@ if "combined_window_database" in st.session_state and all(
             if target not in results.columns:
                 results[target] = None  # Initialize the column if it doesn't exist
 
-            results.loc[results["window_type"] == row["window_type"], target] = predictions
+            results.loc[results["window_name"] == row["window_name"], target] = predictions
 
     # Apply Logic to Update Results
     results.loc[results["cooling_load"] < 1, ["cooling_load"]] = 0
@@ -209,10 +199,12 @@ if "combined_window_database" in st.session_state and all(
     )
 
     # Baseline result
-    baseline_result = results.loc[results["window_type"] == baseline]
+    baseline_result = results.loc[results["window_name"] == baseline]
 
     # Money saved compared to the baseline model
     results["cost_difference"] = baseline_result["total_cost"].values[0] - results["total_cost"]
+    results["cooling_difference"] = baseline_result["cooling_cost"].values[0] - results["cooling_cost"]
+    results["heating_difference"] = baseline_result["heating_cost"].values[0] - results["heating_cost"]
     sorted_results = results.sort_values(by="total_cost", ascending=True).reset_index(drop=True)
     top_3_results = sorted_results.head(3)
 

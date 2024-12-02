@@ -9,12 +9,13 @@ DEFAULT_WINDOW_DATABASE_PATH = 'data/window_data.csv'
 # Display default window database
 # st.write("### Default Window Database:")
 default_window_database = pd.read_csv(DEFAULT_WINDOW_DATABASE_PATH)
+default_window_database["window_name"] = default_window_database["window_type"]
 # st.write(default_window_database)
 
 st.title("Specify Window Details")
 
 # Window-Wall Ratio
-st.write(f"**Select your window-to-wall ratio (see example image below):**")
+st.write(f"**Select the most applicable window configuration of your house (see example image below):**")
 col1, col2, col3 = st.columns(3)
 with col1:
     wwr_10_path = "utils/SF_WWR_10.png"
@@ -33,7 +34,7 @@ wwr = st.selectbox(
 )
 
 # Baseline window for home users
-st.write(f"**Please select a window type your home currently use:**")
+st.write(f"**Select the most applicable window type your home currently use (Single-pane window by default)**")
 baseline = st.selectbox(
     "Baseline Window Type",
     options=default_window_database["window_type"].unique(),
@@ -72,8 +73,8 @@ if add:
     if submitted:
         if window_type and window_name and U_factor and SHGC:
             new_window = pd.DataFrame(
-                [[window_type, U_factor, SHGC]],
-                columns=["window_type", "U-factor", "SHGC"]
+                [[window_type, window_name, U_factor, SHGC]],
+                columns=["window_type", "window_name", "U-factor", "SHGC"]
             )
             st.session_state.custom_windows = pd.concat([st.session_state.custom_windows, new_window], ignore_index=True)
             st.success(f"Window '{window_type}' added successfully!")
@@ -81,7 +82,7 @@ if add:
             st.error("Please fill out all fields before submitting.")
 
 # Combine default and custom windows
-combined_window_database = pd.concat([default_window_database[["window_type", "U-factor", "SHGC"]],
+combined_window_database = pd.concat([default_window_database,
                                       st.session_state.custom_windows], ignore_index=True)
 
 # Create a sorting key based on the pane type
@@ -101,7 +102,7 @@ combined_window_database["sort_key"] = combined_window_database["window_type"].a
 # Sort the DataFrame by sort_key and then alphabetically within each group
 sorted_window_database = combined_window_database.sort_values(by=["sort_key", "window_type"]).drop(columns="sort_key")
 
-# Display the combined database
+# # Display the combined database
 st.write("### Current Window Database (Default + Custom):")
 st.write(sorted_window_database)
 
@@ -111,8 +112,15 @@ st.session_state["wwr"] = wwr
 st.session_state["baseline"] = baseline
 
 # Navigation buttons
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1, 1.5])
 with col1:
     Back_to_House()
 with col2:
-    Go_to_Result()
+    col1, col2 = st.columns([1.2, 1])
+    with col1:
+        st.markdown(
+            '<p style="font-size:12px;">Please notice that three recommendations will made based on your choice of window!</p>',
+            unsafe_allow_html=True
+        )
+    with col2:
+        Go_to_Result()

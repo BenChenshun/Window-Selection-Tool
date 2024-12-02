@@ -7,8 +7,12 @@ st.title("Enter House Information")
 vintage = st.selectbox(
         f"**Select the year your house was built (Vintage)**",
         options=["<1940", "1940s", "1950s", "1960s", "1970s",
-                 "1980s", "1990s", "2000s", "2010s"]
+                 "1980s", "1990s", "2000s", ">2010"]
     )
+
+if vintage == ">2010":
+    vintage = "2010s"
+
 house_type = st.selectbox(
     f"**Select your house type**",
     options=["Single-Family Detached", "Single-Family Attached", "Apartment Unit",
@@ -21,7 +25,7 @@ orientation = st.selectbox(
             "Southeast"]
 )
 
-conditioned_area = st.number_input(f"**Enter the floor area (sq ft)**", min_value=100, max_value=10000)
+floor_area = st.number_input(f"**Enter the floor area (sq ft) above grade (Exclude basement)**", min_value=100, max_value=10000)
 stories = st.number_input(f"**Number of Stories**", min_value=1, max_value=3, step=1)
 heating_setpoint = st.number_input(f"**Heating setpoint (°F)**", min_value=50, max_value=80, value=68)
 cooling_setpoint = st.number_input(f"**Cooling setpoint (°F)**", min_value=60, max_value=80, value=75)
@@ -29,14 +33,20 @@ cooling_setpoint = st.number_input(f"**Cooling setpoint (°F)**", min_value=60, 
 st.write(f"**Basement Information**")
 is_heated_basement = st.checkbox("Do you have a heated basement?")
 foundation = "Heated Basement" if is_heated_basement else "Others"
+if is_heated_basement:
+    basement_area = st.number_input(f"**Enter the basement area (sq ft)**", min_value=100, max_value=10000)
+else:
+    basement_area = 0
+
+conditioned_area = floor_area + basement_area
 
 # Utility input section
 st.write(f"**Utility Costs**")
 summer_bill = st.number_input(
-    "Summer season utility bill ($)", min_value=0.0, step=0.01, format="%.2f"
+    "Summer season Monthly utility bill ($)", min_value=0.0, step=0.01, format="%.2f"
 )
 winter_bill = st.number_input(
-    "Winter season utility bill ($)", min_value=0.0, step=0.01, format="%.2f"
+    "Winter season Monthly utility bill ($)", min_value=0.0, step=0.01, format="%.2f"
 )
 
 # Calculate the surface volume ratio using user inputs
