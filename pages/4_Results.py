@@ -2,7 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
-from utils import Home
+from utils import Home, plot_energy_contributions
 import category_encoders as ce
 
 st.title("View the Results")
@@ -55,6 +55,7 @@ def show_results(df):
                 f"- Your house has no cooling need! ❄️\n"
                 f"- Monthly Heating Money Saved Related to Window ($): {row['heating_difference']:.2f} 💲\n"
             )
+            # plot_energy_contributions(row)
         elif (df["heating_load"] == 0).all() and "cost_difference" in df.columns:
             stars = "⭐" * max(3 - i, 0)
             st.markdown(
@@ -62,6 +63,7 @@ def show_results(df):
                 f"- Monthly Cooling Money Saved Related to Window ($): {row['cooling_difference']:.2f} 💲\n"
                 f"- Your house has no heating need! 🔥\n"
             )
+            # plot_energy_contributions(row)
         elif "cost_difference" in df.columns:
             stars = "⭐" * max(3 - i, 0)
             st.markdown(
@@ -69,6 +71,7 @@ def show_results(df):
                 f"- Monthly Cooling Money Saved Related to Window ($): {row['cooling_difference']:.2f} 💲\n"
                 f"- Monthly Heating Money Saved Related to Window ($): {row['heating_difference']:.2f} 💲\n"
             )
+            # plot_energy_contributions(row)
         else:
             st.markdown(
                 f"**{row['window_name']}🪟** \n"
@@ -78,6 +81,10 @@ def show_results(df):
                 f"- Heating Cost Related to Window ($): {row['heating_cost']:.2f} 💲\n"
                 f"- Total Cost Related to Window ($): {row['total_cost']:.2f} 💰"
             )
+
+    st.markdown("<p style='text-align: center;'>Percentage of heating/cooling energy contributed through windows</p>",
+    unsafe_allow_html=True)
+    plot_energy_contributions(df)
 
 st.write(f"**Summary of your house properties:**")
 # Display summary
