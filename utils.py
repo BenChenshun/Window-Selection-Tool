@@ -58,34 +58,51 @@ def plot_energy_contributions(df):
     total_cooling = df["cooling_load"]
     total_heating = df["heating_load"]
 
-    # Create subplots for cooling and heating
-    fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+    # Define positions for grouped bars
+    bar_width = 0.5
+    y_positions = [i * 2 for i in range(len(window_names))]
 
-    # Bar plot for heating contribution
-    axes[0].bar(window_names, total_heating, label="Total Heating Energy", color="lightcoral", alpha=0.8)
-    axes[0].bar(window_names, heating_window, label="Window Heating Contribution", color="red", alpha=0.8)
-    axes[0].set_title("Heating Contribution by Windows")
-    axes[0].set_ylabel("Energy Contribution (kWh)")
-    axes[0].set_xticks(range(len(window_names)))
-    axes[0].set_xticklabels(window_names, rotation=45, ha="right")
-    axes[0].legend(loc="upper right")
+    # Create the figure and axes
+    fig, ax = plt.subplots(figsize=(10, len(window_names) * 1.5))  # Adjust height dynamically
 
-    # Add percentage labels to bars (upper-right corner)
-    for i, (total, percent) in enumerate(zip(total_heating, heating_percent)):
-        axes[0].text(i, total, f"{percent:.2f}%", ha="center", va="bottom", fontsize=10)
+    # Plot heating bars
+    ax.barh(
+        [y - bar_width / 2 for y in y_positions], total_heating, bar_width,
+        label="Total Heating Energy", color="lightcoral", alpha=0.7
+    )
+    ax.barh(
+        [y - bar_width / 2 for y in y_positions], heating_percent, bar_width,
+        label="Window Heating Contribution", color="red", alpha=0.9
+    )
 
-    # Bar plot for cooling contribution
-    axes[1].bar(window_names, total_cooling, label="Total Cooling Energy", color="lightblue", alpha=0.8)
-    axes[1].bar(window_names, cooling_window, label="Window Cooling Contribution", color="dodgerblue", alpha=0.8)
-    axes[1].set_title("Cooling Contribution by Windows")
-    axes[1].set_ylabel("Energy Contribution (kWh)")
-    axes[1].set_xticks(range(len(window_names)))
-    axes[1].set_xticklabels(window_names, rotation=45, ha="right")
-    axes[1].legend(loc="upper right")
+    # Plot cooling bars
+    ax.barh(
+        [y + bar_width / 2 for y in y_positions], total_cooling, bar_width,
+        label="Total Cooling Energy", color="lightblue", alpha=0.7
+    )
+    ax.barh(
+        [y + bar_width / 2 for y in y_positions], cooling_percent, bar_width,
+        label="Window Cooling Contribution", color="dodgerblue", alpha=0.9
+    )
 
-    # Add percentage labels to bars (upper-right corner)
-    for i, (total, percent) in enumerate(zip(total_cooling, cooling_percent)):
-        axes[1].text(i, total, f"{percent:.2f}%", ha="center", va="bottom", fontsize=10)
+    # Add labels and title
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(window_names)
+    ax.set_xlabel("Energy Contribution (Btu)")
+    # ax.set_title("Heating/Cooling Energy Contributions by Windows")
+    # Adjust legend placement: Move outside the plot area
+    ax.legend(
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1),  # Place legend above the plot
+        ncol=2,  # Spread legend horizontally
+        fontsize=8
+    )
+
+    # Add percentage labels to bars
+    for i, (y, total, percent) in enumerate(zip(y_positions, total_heating, heating_percent)):
+        ax.text(total, y - bar_width / 2, f"{percent:.2f}%", va="center", ha="left", fontsize=10)
+    for i, (y, total, percent) in enumerate(zip(y_positions, total_cooling, cooling_percent)):
+        ax.text(total, y + bar_width / 2, f"{percent:.2f}%", va="center", ha="left", fontsize=10)
 
     # Adjust layout and display the plot in Streamlit
     plt.tight_layout()
