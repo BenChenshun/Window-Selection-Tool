@@ -50,7 +50,7 @@ def plot_energy_contributions(df):
     # Prepare data for the plot
     window_names = df["window_name"]
     # Truncate window names for display
-    window_names = [name[:20] + "..." if len(name) > 20 else name for name in window_names]
+    window_names = [name[:25] + "..." if len(name) > 25 else name for name in window_names]
     cooling_window = df["cooling_window"]
     cooling_percent = df["cooling_window_percent"]
     heating_window = df["heating_window"]
@@ -71,7 +71,7 @@ def plot_energy_contributions(df):
         label="Total Heating Energy", color="lightcoral", alpha=0.7
     )
     ax.barh(
-        [y - bar_width / 2 for y in y_positions], heating_percent, bar_width,
+        [y - bar_width / 2 for y in y_positions], heating_window, bar_width,
         label="Window Heating Contribution", color="red", alpha=0.9
     )
 
@@ -81,7 +81,7 @@ def plot_energy_contributions(df):
         label="Total Cooling Energy", color="lightblue", alpha=0.7
     )
     ax.barh(
-        [y + bar_width / 2 for y in y_positions], cooling_percent, bar_width,
+        [y + bar_width / 2 for y in y_positions], cooling_window, bar_width,
         label="Window Cooling Contribution", color="dodgerblue", alpha=0.9
     )
 
