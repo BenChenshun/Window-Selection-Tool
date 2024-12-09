@@ -77,9 +77,8 @@ def show_results(df):
                 f"**{row['window_name']}🪟** \n"
                 f"- Window Cooling Contribution (%): {row['cooling_window_percent']:.2f}% ❄️\n"
                 f"- Window Heating Contribution (%): {row['heating_window_percent']:.2f}% 🔥\n"
-                f"- Cooling Cost Related to Window ($): {row['cooling_cost']:.2f} 💲\n"
-                f"- Heating Cost Related to Window ($): {row['heating_cost']:.2f} 💲\n"
-                f"- Total Cost Related to Window ($): {row['total_cost']:.2f} 💰"
+                f"- Monthly Cooling Cost Related to Window ($): {row['cooling_cost']:.2f} 💲\n"
+                f"- Monthly Heating Cost Related to Window ($): {row['heating_cost']:.2f} 💲\n"
             )
 
     st.markdown("<p style='text-align: center;'>Percentage of heating/cooling energy contributed through windows</p>",
