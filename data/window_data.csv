@@ -1,11 +1,14 @@
 window_type,SHGC,U-factor
-"Double-pane with Low-E coating, Non-metal frame, Medium Solar Heat Gain",0.44,0.38
-"Double-pane, Non-metal frame",0.56,0.49
-"Single-pane, non-metal frame",0.63,0.84
-"Double-pane, Metal frame",0.67,0.76
-"Double-pane, Non-metal frame, Exterior Clear Storm window",0.49,0.34
-"Double-pane, Metal frame, Exterior Clear Storm window",0.51,0.55
-"Single-pane, Metal frame",0.76,1.16
-"Triple-pane with Low-E coating, Non-metal frame, Low Solar Heat Gain",0.26,0.29
-"Single-pane, Metal frame, Exterior Clear Storm window",0.56,0.67
-"Single-pane, Non-metal frame, Exterior Clear Storm window",0.54,0.47
+"Single Glazed, Clear, Metal Frame",0.75,0.90
+"Dual Glazed Clear, Metal Frame",0.61,0.85
+"Dual Glazed Clear, Non-metal Frame",0.61,0.52
+"Dual Glazed Low-E",0.53,0.41
+"ENERGY STAR Northern Zone",0.40,0.22
+"ENERGY STAR North-Central Zone",0.40,0.25
+"ENERGY STAR South-Central Zone",0.23,0.28
+"ENERGY STAR Southern Zone",0.23,0.32
+"ENERGY STAR Most Efficient Northern Zone",0.40,0.20
+"ENERGY STAR Most Efficient North-Central Zone",0.40,0.20
+"ENERGY STAR Most Efficient South-Central Zone",0.23,0.20
+"ENERGY STAR Most Efficient Southern Zone",0.23,0.21
+

@@ -34,11 +34,16 @@ wwr = st.selectbox(
 )
 
 # Baseline window for home users
+# Filter out ENERGY STAR window types
+baseline_options = default_window_database.loc[
+    ~default_window_database["window_type"].str.contains("ENERGY STAR"), "window_type"
+].unique()
+
 st.write(f"**Select the most applicable window type your home currently use (Single-pane window by default)**")
 baseline = st.selectbox(
     "Baseline Window Type",
-    options=default_window_database["window_type"].unique(),
-    index=6
+    options=baseline_options,
+    index=0
 )
 st.link_button("Learn about window products💡", "https://efficientwindows.org/types_parts/")
 
@@ -85,26 +90,26 @@ if add:
 combined_window_database = pd.concat([default_window_database,
                                       st.session_state.custom_windows], ignore_index=True)
 
-# Create a sorting key based on the pane type
-def get_sort_key(window_type):
-    if window_type.startswith("Single-pane"):
-        return 1  # Single-pane has the highest priority
-    elif window_type.startswith("Double-pane"):
-        return 2  # Double-pane next
-    elif window_type.startswith("Triple-pane"):
-        return 3  # Triple-pane last
-    else:
-        return 4  # Any other type (if exists)
+# # Create a sorting key based on the pane type
+# def get_sort_key(window_type):
+#     if window_type.startswith("Single-pane"):
+#         return 1  # Single-pane has the highest priority
+#     elif window_type.startswith("Double-pane"):
+#         return 2  # Double-pane next
+#     elif window_type.startswith("Triple-pane"):
+#         return 3  # Triple-pane last
+#     else:
+#         return 4  # Any other type (if exists)
 
 # Add a sort key column to the DataFrame
-combined_window_database["sort_key"] = combined_window_database["window_type"].apply(get_sort_key)
+# combined_window_database["sort_key"] = combined_window_database["window_type"].apply(get_sort_key)
 
 # Sort the DataFrame by sort_key and then alphabetically within each group
-sorted_window_database = combined_window_database.sort_values(by=["sort_key", "window_type"]).drop(columns="sort_key")
+# sorted_window_database = combined_window_database.sort_values(by=["sort_key", "window_type"]).drop(columns="sort_key")
 
 # # Display the combined database
 st.write("### Current Window Database (Default + Custom):")
-st.write(sorted_window_database)
+st.write(combined_window_database)
 
 st.session_state["combined_window_database"] = combined_window_database
 st.session_state["window_area"] = window_area

@@ -31,6 +31,8 @@ def get_weather_info(zip_code):
             "Climate Zone": [climate_zone],
             "HDH": nearest_station['HDH'],
             "CDH": nearest_station['CDH'],
+            "HDD": nearest_station['HDD'],
+            "CDD": nearest_station['CDD'],
             "GHI": nearest_station['GHI']
         }
         
@@ -48,6 +50,22 @@ if __name__ == "__main__":
     zip_code = "16803"  # Example zip code
     df = get_weather_info(zip_code)
     print(df)
+
+#%%
+def get_energystar_zone(zip_code):
+    try:
+        df = pd.read_csv('data/ClimateZones_County.csv')
+        energystar_zone = df.loc[df['Zip Code'] == int(zip_code), 'ENERGY STAR Zone'].values[0]
+        return energystar_zone
+
+    except ValueError as e:
+        print(f"Error: {e}")
+
+# Example usage
+if __name__ == "__main__":
+    zip_code = "16803"  # Example zip code
+    energystar_zone = get_energystar_zone(int(zip_code))
+    print(energystar_zone)
 
 #%%
 import numpy as np
@@ -148,3 +166,11 @@ def convert_orientation(orientation):
     if orientation == 'Southwest': return 225
     if orientation == 'West': return 270
     if orientation == 'Northwest': return 315
+
+#%%
+# Calculate heating & cooling period
+def calculate_period(HDD, CDD):
+    heating_period = HDD/(HDD+CDD)*12
+    cooling_period = CDD/(HDD+CDD)*12
+    return heating_period, cooling_period
+
