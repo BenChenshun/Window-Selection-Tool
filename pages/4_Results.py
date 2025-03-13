@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from utils import Home, plot_energy_contributions
 import category_encoders as ce
-from IPython import embed
+# from IPython import embed
 
 st.title("View the Results")
 
