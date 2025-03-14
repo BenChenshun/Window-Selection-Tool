@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="66b38627-d45b-4292-8788-1c50606b9cd0" name="Changes" comment="" />
+    <list default="true" id="66b38627-d45b-4292-8788-1c50606b9cd0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/3_Window_Information.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_Window_Information.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/4_Results.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/4_Results.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,23 +93,12 @@
       <workItem from="1738473484559" duration="31799000" />
       <workItem from="1740168095239" duration="1356000" />
       <workItem from="1740169471296" duration="3060000" />
-      <workItem from="1740864197993" duration="9614000" />
+      <workItem from="1740864197993" duration="15780000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pages/3_Window_Information.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Web_based_window_selection$app.coverage" NAME="app Coverage Results" MODIFIED="1731527439019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -2,7 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
-from utils import Home, plot_energy_contributions
+from utils import Home, plot_energy_contributions, plot_energy_contributions_pie
 import category_encoders as ce
 # from IPython import embed
 
@@ -68,7 +68,7 @@ def show_results(df):
                 f"- Your house has no cooling need! ❄️\n"
                 f"- Window Lifetime Heating Cost Save ($): {row['heating_difference']:.2f} 💲\n"
             )
-            # plot_energy_contributions(row)
+            plot_energy_contributions_pie(row)
         elif (df["heating_load"] == 0).all() and "cost_difference" in df.columns:
             # stars = "⭐" * max(3 - i, 0)
             st.markdown(
@@ -77,7 +77,7 @@ def show_results(df):
                 f"- Window Lifetime Cooling Cost Save ($): {row['cooling_difference']:.2f} 💲\n"
                 f"- Your house has no heating need! 🔥\n"
             )
-            # plot_energy_contributions(row)
+            plot_energy_contributions_pie(row)
         elif "cost_difference" in df.columns:
             # stars = "⭐" * max(3 - i, 0)
             st.markdown(
@@ -86,7 +86,7 @@ def show_results(df):
                 f"- Window Lifetime Cooling Cost Save ($): {row['cooling_difference']:.2f} 💲\n"
                 f"- Window Lifetime Heating Cost Save ($): {row['heating_difference']:.2f} 💲\n"
             )
-            # plot_energy_contributions(row)
+            plot_energy_contributions_pie(row)
         else:
             st.markdown(
                 f"**{row['window_name']}🪟** \n"
@@ -96,12 +96,11 @@ def show_results(df):
                 f"- Window Lifetime Cooling Cost ($): {row['lifetime_cooling_cost']:.2f} 💲\n"
                 f"- Monthly Heating Cost Related to Window ($): {row['monthly_heating_cost']:.2f} 💲\n"
                 f"- Window Lifetime Heating Cost ($): {row['lifetime_heating_cost']:.2f} 💲\n"
-
             )
-
-    st.markdown("<p style='text-align: center;'>Percentage of heating/cooling energy contributed through windows</p>",
-    unsafe_allow_html=True)
-    plot_energy_contributions(df)
+            plot_energy_contributions_pie(row)
+    # st.markdown("<p style='text-align: center;'>Percentage of heating/cooling energy contributed through windows</p>",
+    # unsafe_allow_html=True)
+    # plot_energy_contributions_pie(df)
 
 st.write(f"**Summary of your house properties:**")
 # Display summary
@@ -239,7 +238,7 @@ if "combined_window_database" in st.session_state and all(
     # top_3_results = sorted_results.head(3)
     energystar_results = results.loc[results["window_name"].str.contains(energystar_zone)]
 
-    st.write("### Baseline window performance:")
+    st.write("### How your existing windows affect energy bills❓")
     show_results(baseline_result)
 
     # top3 = st.button("🏆Make recommendations!")
@@ -247,15 +246,15 @@ if "combined_window_database" in st.session_state and all(
     #     st.write("### Top 3 Recommended Windows:")
     #     show_results(top_3_results)
 
-    energystar = st.button("🏆Make recommendations for Energy Star Windows!")
+    energystar = st.button("🏆Recommended windows for you")
     if energystar:
         st.write("### Energy Star Recommended Windows:")
         show_results(energystar_results)
 
-    # Add a button to toggle showing all results
-    show_all = st.toggle("Show All Results")
-    if show_all:
-        st.write(sorted_results)
+    # # Add a button to toggle showing all results
+    # show_all = st.toggle("Show All Results")
+    # if show_all:
+    #     st.write(sorted_results)
 
 else:
     st.error("Missing necessary data or predictors. Please complete previous sections.")

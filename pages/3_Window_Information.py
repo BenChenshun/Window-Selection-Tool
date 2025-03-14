@@ -108,8 +108,8 @@ combined_window_database = pd.concat([default_window_database,
 # sorted_window_database = combined_window_database.sort_values(by=["sort_key", "window_type"]).drop(columns="sort_key")
 
 # # Display the combined database
-st.write("### Current Window Database (Default + Custom):")
-st.write(combined_window_database)
+# st.write("### Current Window Database (Default + Custom):")
+# st.write(combined_window_database)
 
 st.session_state["combined_window_database"] = combined_window_database
 st.session_state["window_area"] = window_area
