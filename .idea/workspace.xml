@@ -5,10 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="66b38627-d45b-4292-8788-1c50606b9cd0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/zipcodeutility/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zipcodeutility/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zipcodeutility/utilityrates.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zipcodeutility/zipcode_state.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cooling_load_lightgbm_lineartree.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/cooling_load_lightgbm_lineartree.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cooling_window_catboost.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/cooling_window_catboost.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cooling_window_lightgbm.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/cooling_window_lightgbm.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cooling_window_lightgbm_lineartree.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/cooling_window_lightgbm_lineartree.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/heating_load_lightgbm_lineartree.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/heating_load_lightgbm_lineartree.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/heating_window_catboost.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/heating_window_catboost.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/heating_window_lightgbm.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/heating_window_lightgbm.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/heating_window_lightgbm_lineartree.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/heating_window_lightgbm_lineartree.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/2_House_Information.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/2_House_Information.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/3_Window_Information.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/3_Window_Information.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/4_Results.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/4_Results.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocessing/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocessing/data_processing.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing/data_processing.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocessing/data_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing/data_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zipcodeweather/climatezone.py" beforeDir="false" afterPath="$PROJECT_DIR$/zipcodeweather/climatezone.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +55,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.1_House_Location.executor": "Run",
     "Python.3_Window_Information.executor": "Debug",
     "Python.app.executor": "Run",
     "Python.streamlitapp.executor": "Run",
+    "Python.zipcode_state.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/chenchenshun/Library/CloudStorage/OneDrive-ThePennsylvaniaStateUniversity/Research Project/NFRC/Tool development/Web-based window selection/Preprocessing",
@@ -93,16 +113,31 @@
       <workItem from="1738473484559" duration="31799000" />
       <workItem from="1740168095239" duration="1356000" />
       <workItem from="1740169471296" duration="3060000" />
-      <workItem from="1740864197993" duration="15780000" />
+      <workItem from="1740864197993" duration="27833000" />
+      <workItem from="1742664070226" duration="19544000" />
+      <workItem from="1743127739224" duration="14787000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Web_based_window_selection$app.coverage" NAME="app Coverage Results" MODIFIED="1731527439019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Web_based_window_selection$streamlitapp.coverage" NAME="streamlitapp Coverage Results" MODIFIED="1730489744335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Web_based_window_selection$1_House_Location.coverage" NAME="1_House_Location Coverage Results" MODIFIED="1743127616893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
+    <SUITE FILE_PATH="coverage/Web_based_window_selection$zipcode_state.coverage" NAME="zipcode_state Coverage Results" MODIFIED="1744061503109" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/zipcodeutility" />
     <SUITE FILE_PATH="coverage/Web_based_window_selection$3_Window_Information.coverage" NAME="3_Window_Information Coverage Results" MODIFIED="1741900580231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pages" />
   </component>
 </project>

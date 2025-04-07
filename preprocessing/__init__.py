@@ -7,7 +7,9 @@ from .data_processing import (  # Import functions from data_processing.py
     calculate_predicted_window_area,
     calculate_surface_volume_ratio,
     convert_orientation,
-    calculate_period
+    calculate_period,
+    get_floor_area_bin,
+    get_infiltration
 )
 
 # Initialize ZipCodeWeather instance
@@ -21,5 +23,7 @@ __all__ = [
     "calculate_predicted_window_area",
     "calculate_surface_volume_ratio",
     "convert_orientation",
-    "calculate_period"
+    "calculate_period",
+    "get_floor_area_bin",
+    "get_infiltration"
 ]

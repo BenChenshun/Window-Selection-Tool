@@ -6,3 +6,5 @@ category-encoders
 geopy
 geopandas
 lightgbm
+catboost
+uszipcode

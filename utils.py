@@ -141,7 +141,7 @@ def plot_energy_contributions_pie(df):
 
     # Create the figure and axes.
     if plot_count == 1:
-        fig, ax = plt.subplots(figsize=(6, 6))
+        fig, ax = plt.subplots(figsize=(3, 3))
         axes = [ax]
     else:
         fig, axes = plt.subplots(1, 2, figsize=(12, 6))
@@ -168,8 +168,8 @@ def plot_energy_contributions_pie(df):
             labels=labels_cooling,
             colors=colors_cooling,
             startangle=140,
-            autopct="%1.1f%%",
-            textprops={"fontsize": 14}
+            autopct="%1.1f%%"
+            # textprops={"fontsize": 14}
         )
         ax.set_title(f"{window_name} - Cooling Contribution")
         ax_index += 1
@@ -192,8 +192,8 @@ def plot_energy_contributions_pie(df):
             labels=labels_heating,
             colors=colors_heating,
             startangle=140,
-            autopct="%1.1f%%",
-            textprops={"fontsize": 14}
+            autopct="%1.1f%%"
+            # textprops={"fontsize": 14}
         )
         ax.set_title(f"{window_name} - Heating Contribution")
         ax_index += 1

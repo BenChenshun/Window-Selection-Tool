@@ -36,6 +36,10 @@ def get_climate_zone_from_geojson(user_coords, climate_zone=None):
     # Check each polygon to see if the point falls within
     for _, row in climate_zone.iterrows():
         if row['geometry'].contains(point):
-            return row['BA_Climate_Zone']  # Replace 'zone' with the actual attribute name for climate zone
+            return {
+                'BA_Climate_Zone': row['BA_Climate_Zone'],
+                'ASHRAE_IECC_Climate_Zone': f"{row['IECC_Climate_Zone']}{row['IECC_Moisture_Regime']}"
+            }
+
 
     raise ValueError("Climate zone not found for this location.")

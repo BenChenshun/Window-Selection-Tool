@@ -47,6 +47,14 @@ baseline = st.selectbox(
 )
 st.link_button("Learn about window products💡", "https://efficientwindows.org/types_parts/")
 
+blinds = st.toggle("Add Blinds")
+if blinds:
+    blinds_per = st.slider(
+        "What's the average blinded portion?",
+        0.0, 100.0, 25.0
+    )
+    default_window_database['SHGC'] = default_window_database['SHGC']*(100.0-blinds_per)*0.01
+
 conditioned_area = st.session_state["conditioned_area"]
 house_type = st.session_state["house_type"]
 stories = st.session_state["stories"]
