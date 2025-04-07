@@ -221,4 +221,4 @@ from zipcodeutility import ZipCodeUtility
 utility = ZipCodeUtility()
 rates = utility.get_rates("16803", "Natural Gas")
 
-print(rates["electricity_rate"])
+print(rates)

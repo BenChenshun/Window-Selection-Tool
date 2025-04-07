@@ -9,6 +9,7 @@ class ZipCodeUtility:
 
     def __init__(self, rates_df=None):
         self.rates_df = rates_df or pd.read_csv(UTILITY_RATES_PATH)
+        self.rates_df["Electricity"] = self.rates_df["Electricity"]*0.01/0.003413
 
     def get_rates(self, zip_code, fuel_type):
         """
@@ -32,7 +33,7 @@ class ZipCodeUtility:
             match = self.rates_df[self.rates_df["State"].str.upper() == state]
 
             if not match.empty:
-                electricity_rate = float(match["Electricity"].values[0])*0.01/0.003413
+                electricity_rate = float(match["Electricity"].values[0])
                 heating_fuel_rate = float(match[fuel].values[0])
                 return {
                     "electricity_rate": electricity_rate,
