@@ -1,7 +1,7 @@
 # File: utils.py
 
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
+# from streamlit_extras.switch_page_button import switch_page
 from streamlit_extras.stoggle import stoggle
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,42 +10,42 @@ import numpy as np
 def Home():
     home = st.button("Return")
     if home:
-        switch_page("Home")
+        st.switch_page("Home.py")
 
 def Go_to_Location():
     loc = st.button("Next")
     if loc:
-        switch_page("house location")
+        st.switch_page("pages/1_House_Location.py")
 
 def Back_to_Location():
     loc = st.button("Return")
     if loc:
-        switch_page("house location")
+        st.switch_page("pages/1_House_Location.py")
 
 def Go_to_House():
     house = st.button("Next")
     if house:
-        switch_page("House Information")
+        st.switch_page("pages/2_House_Information.py")
 
 def Back_to_House():
     house = st.button("Return")
     if house:
-        switch_page("House Information")
+        st.switch_page("pages/2_House_Information.py")
 
 def Go_to_Window():
     window = st.button("Next")
     if window:
-        switch_page("Window Information")
+        st.switch_page("pages/3_Window_Information.py")
 
 def Back_to_Window():
     window = st.button("Return")
     if window:
-        switch_page("Window Information")
+        st.switch_page("pages/3_Window_Information.py")
 
 def Go_to_Result():
     window = st.button("Finish and Run!")
     if window:
-        switch_page("Results")
+        st.switch_page("pages/4_Results.py")
 
 def plot_energy_contributions(df):
     # Prepare data for the plot
