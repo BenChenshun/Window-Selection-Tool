@@ -1,8 +1,6 @@
 # File: utils.py
 
 import streamlit as st
-# from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.stoggle import stoggle
 import matplotlib.pyplot as plt
 import numpy as np
 
