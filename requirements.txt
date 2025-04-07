@@ -7,4 +7,3 @@ geopy
 geopandas
 lightgbm
 catboost
-uszipcode
