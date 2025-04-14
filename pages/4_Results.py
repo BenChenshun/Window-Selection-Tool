@@ -51,16 +51,19 @@ onehot_encoder = load_onehot_encoder()
 label_encoder = load_label_encoder()
 
 #Define general variables
+is_cooling = st.session_state["is_cooling"]
+is_heating = st.session_state["is_heating"]
+cooling_period = st.session_state["cooling_period"]
+heating_period = st.session_state["heating_period"]
 zip_code = st.session_state["zip_code"]
-heating_fuel = st.session_state["heating_fuel"]
-utility = ZipCodeUtility()
-rates = utility.get_rates(zip_code, heating_fuel)
-electricity_rate = rates["electricity_rate"]
-heating_fuel_rate = rates["heating_fuel_rate"]
-
+# heating_fuel = st.session_state["heating_fuel"]
+# utility = ZipCodeUtility()
+# rates = utility.get_rates(zip_code, heating_fuel)
+# electricity_rate = rates["electricity_rate"]
+# heating_fuel_rate = rates["heating_fuel_rate"]
+summer_bill = st.session_state["summer_bill"]
+winter_bill = st.session_state["winter_bill"]
 baseline = st.session_state["baseline"]
-# heating_period = st.session_state["heating_period"]
-# cooling_period = st.session_state["cooling_period"]
 energystar_zone = st.session_state["energystar_zone"]
 lifespan = 15
 
@@ -110,11 +113,9 @@ def show_results(df):
         else:
             st.markdown(
                 f"**{row['window_name']}🪟** \n"
-                # f"- Window Cooling Contribution (%): {row['cooling_window_percent']:.2f}% ❄️\n"
-                # f"- Window Heating Contribution (%): {row['heating_window_percent']:.2f}% 🔥\n"
-                f"- Annual Cooling Cost Related to Window ($): {row['annual_cooling_cost']:.2f} 💲\n"
+                # f"- Annual Cooling Cost Related to Window ($): {row['annual_cooling_cost']:.2f} 💲\n"
                 f"- Window Lifetime Cooling Cost ($): {row['lifetime_cooling_cost']:.2f} 💲\n"
-                f"- Annual Heating Cost Related to Window ($): {row['annual_heating_cost']:.2f} 💲\n"
+                # f"- Annual Heating Cost Related to Window ($): {row['annual_heating_cost']:.2f} 💲\n"
                 f"- Window Lifetime Heating Cost ($): {row['lifetime_heating_cost']:.2f} 💲\n"
             )
             plot_energy_contributions_pie(row)
@@ -213,34 +214,34 @@ if "combined_window_database" in st.session_state and all(
             results.loc[results["window_name"] == row["window_name"], target] = predictions
     # embed()
     # Apply Logic to Update Results
-    # if summer_bill==0:
-    #     results["cooling_load"] = 0
-    # if winter_bill==0:
-    #     results["heating_load"] = 0
+    if is_cooling==0:
+        results["cooling_load"] = 0
+    if is_heating==0:
+        results["heating_load"] = 0
 
     # Add percentage columns to the results DataFrame
     # Calculate percentages only when cooling_load and heating_load are > 0.5
     results["cooling_window_percent"] = results.apply(
-        lambda row: (row["cooling_window"] / row["cooling_load"]) * 100 if row["cooling_load"] > 1 else 0, axis=1
+        lambda row: (row["cooling_window"] / row["cooling_load"]) * 100 if row["cooling_load"] > 5 else 0, axis=1
     )
     results["heating_window_percent"] = results.apply(
-        lambda row: (row["heating_window"] / row["heating_load"]) * 100 if row["heating_load"] > 1 else 0, axis=1
+        lambda row: (row["heating_window"] / row["heating_load"]) * 100 if row["heating_load"] > 5 else 0, axis=1
     )
-    # Add an average percentage for sorting
-    results["average_percent"] = results.apply(
-        lambda row: row["heating_window_percent"] if row["cooling_load"] == 0 else
-        row["cooling_window_percent"] if row["heating_load"] == 0 else
-        (row["cooling_window_percent"] + row["heating_window_percent"]) / 2,
-        axis=1
-    )
+    # # Add an average percentage for sorting
+    # results["average_percent"] = results.apply(
+    #     lambda row: row["heating_window_percent"] if row["cooling_load"] == 0 else
+    #     row["cooling_window_percent"] if row["heating_load"] == 0 else
+    #     (row["cooling_window_percent"] + row["heating_window_percent"]) / 2,
+    #     axis=1
+    # )
 
     # Add a $ value for corresponding window type based on user's utility bills
     results["annual_cooling_cost"] = results.apply(
-        lambda row: (row["cooling_window"] * electricity_rate) if row["cooling_load"] > 1 else 0, axis = 1
+        lambda row: (row["cooling_window_percent"] /100 * summer_bill * cooling_period) if row["cooling_load"] > 5 else 0, axis = 1
     )
     results["lifetime_cooling_cost"] = results["annual_cooling_cost"] * lifespan
     results["annual_heating_cost"] = results.apply(
-        lambda row: (row["heating_window"] * heating_fuel_rate) if row["heating_load"] > 1 else 0, axis=1
+        lambda row: (row["heating_window_percent"] / 100 * winter_bill * heating_period) if row["heating_load"] > 5 else 0, axis=1
     )
     results["lifetime_heating_cost"] = results["annual_heating_cost"] * lifespan
 
@@ -257,6 +258,8 @@ if "combined_window_database" in st.session_state and all(
     results["cost_difference"] = baseline_result["annual_total_cost"].values[0] - results["annual_total_cost"]
     results["cooling_difference"] = (baseline_result["lifetime_cooling_cost"].values[0] - results["lifetime_cooling_cost"])
     results["heating_difference"] = (baseline_result["lifetime_heating_cost"].values[0] - results["lifetime_heating_cost"])
+    # results["cooling_difference"] = (baseline_result["cooling_window"].values[0] - results["cooling_window"]) * electricity_rate * lifespan
+    # results["heating_difference"] = (baseline_result["heating_window"].values[0] - results["heating_window"]) * heating_fuel_rate * lifespan
     sorted_results = results.sort_values(by="lifetime_total_cost", ascending=True).reset_index(drop=True)
     # top_3_results = sorted_results.head(3)
     energystar_results = results.loc[results["window_name"].str.contains(energystar_zone)]

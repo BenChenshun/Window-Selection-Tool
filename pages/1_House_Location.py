@@ -25,6 +25,12 @@ if zip_code:
     energystar_zone = get_energystar_zone(zip_code)
     st.session_state["energystar_zone"] = energystar_zone
 
+    # Get heating and cooling period
+    heating_period = calculate_period(HDD, CDD)[0]
+    st.session_state["heating_period"] = heating_period
+    cooling_period = calculate_period(HDD, CDD)[1]
+    st.session_state["cooling_period"] = cooling_period
+
 else:
     st.write("Please enter a zip code.")
 
